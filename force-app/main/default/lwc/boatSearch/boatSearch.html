@@ -2,10 +2,14 @@
     <lightning-layout multiple-rows>
       <!-- Top -->
       <lightning-layout-item size="12">
-        <lightning-card title="Find a Boat">
-            <lightning-button label="New Boat" title="Create New Boat" onclick={createNewBoat} class="slds-m-left_x-small"></lightning-button>
+        <lightning-card title="Find a Boat" class="slds-is-relative">
+            <!-- <lightning-button label="New Boat" title="Create New Boat" onclick={createNewBoat} class="slds-is-absolute" style="top: 12px; right: 16px;"></lightning-button> -->
+            <slot name="actions">
+                <lightning-button label="New Boat" title="Create New Boat" onclick={createNewBoat} class="slds-is-absolute" style="top: 12px; right: 16px;"></lightning-button>
+            </slot>
           <p class="slds-var-p-horizontal_small">
             <!-- boatSearchForm component goes here -->
+            <c-boat-search-form></c-boat-search-form>
           </p>
         </lightning-card>
       </lightning-layout-item>
