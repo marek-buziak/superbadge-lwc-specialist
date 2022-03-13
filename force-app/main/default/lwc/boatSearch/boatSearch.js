@@ -16,7 +16,9 @@ export default class BoatSearch extends NavigationMixin(LightningElement) {
     
     // Handles search boat event
     // This custom event comes from the form
-    searchBoats(event) { }
+    searchBoats(event) {
+        console.log('event - data from boatSearchForm component:', JSON.parse(JSON.stringify(event)));
+    }
     
     createNewBoat() {
         this[NavigationMixin.Navigate]({
