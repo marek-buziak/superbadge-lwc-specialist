@@ -33,25 +33,34 @@ export default class BoatSearchResults extends LightningElement {
   // public function that updates the existing boatTypeId property
   // uses notifyLoading
   @api searchBoats(boatTypeId) {
+      this.isLoading = true;
+      this.notifyLoading(this.isLoading);
       this.boatTypeId = boatTypeId;
+      this.isLoading = false;
       console.log('this.boatTypeId:', this.boatTypeId);
+      this.notifyLoading(this.isLoading);
   }
   
   // this public function must refresh the boats asynchronously
   // uses notifyLoading
+  // ---> See "Boat Editor–Edit Boats En Masse!" 
   refresh() { }
   
   // this function must update selectedBoatId and call sendMessageService
   updateSelectedTile(event) {
       this.selectedBoatId = event.detail.boatId;
       console.log('this.selectedBoatId from boatSearchResults:', this.selectedBoatId);
+    //   console.log('this.messageContext:', JSON.parse(JSON.stringify(this.messageContext))); ---> powoduje błąd komponentu
+      console.log('this.messageContext:', this.messageContext);
+      console.log('BOATMC:', BOATMC);
       this.sendMessageService(this.selectedBoatId);
   }
   
   // Publishes the selected boat Id on the BoatMC.
   sendMessageService(boatId) {
     // explicitly pass boatId to the parameter recordId
-    publish(this.messageContext, BOATMC, boatId);
+    const payload = { recordId: boatId };
+    publish(this.messageContext, BOATMC, payload);
   }
   
   // The handleSave method must save the changes in the Boat Editor
@@ -69,5 +78,12 @@ export default class BoatSearchResults extends LightningElement {
     .finally(() => {});
   }
   // Check the current value of isLoading before dispatching the doneloading or loading custom event
-  notifyLoading(isLoading) { }
+  notifyLoading(isLoading) {
+      if (isLoading) {
+        this.dispatchEvent(new CustomEvent('loading'));
+      } else {
+          // setTimeout tylko dla testów - ostatecznie do usunięcia
+        setTimeout(() => {this.dispatchEvent(new CustomEvent('doneloading'));}, 2000);
+      }
+  }
 }
