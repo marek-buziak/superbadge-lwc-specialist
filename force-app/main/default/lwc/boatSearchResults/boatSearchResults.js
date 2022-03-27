@@ -37,7 +37,6 @@ export default class BoatSearchResults extends LightningElement {
       this.notifyLoading(this.isLoading);
       this.boatTypeId = boatTypeId;
       this.isLoading = false;
-      console.log('this.boatTypeId:', this.boatTypeId);
       this.notifyLoading(this.isLoading);
   }
   
@@ -49,10 +48,6 @@ export default class BoatSearchResults extends LightningElement {
   // this function must update selectedBoatId and call sendMessageService
   updateSelectedTile(event) {
       this.selectedBoatId = event.detail.boatId;
-      console.log('this.selectedBoatId from boatSearchResults:', this.selectedBoatId);
-    //   console.log('this.messageContext:', JSON.parse(JSON.stringify(this.messageContext))); ---> powoduje błąd komponentu
-      console.log('this.messageContext:', this.messageContext);
-      console.log('BOATMC:', BOATMC);
       this.sendMessageService(this.selectedBoatId);
   }
   
