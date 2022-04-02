@@ -1,30 +1,46 @@
-import { LightningElement } from 'lwc';
+import { LightningElement, api, wire } from 'lwc';
+import getBoatsByLocation from '@salesforce/apex/BoatDataService.getBoatsByLocation';
+import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 const LABEL_YOU_ARE_HERE = 'You are here!';
 const ICON_STANDARD_USER = 'standard:user';
 const ERROR_TITLE = 'Error loading Boats Near Me';
 const ERROR_VARIANT = 'error';
 
 export default class BoatsNearMe extends LightningElement {
-    boatTypeId;
-  mapMarkers = [];
-  isLoading = true;
-  isRendered;
-  latitude;
-  longitude;
+    @api boatTypeId;
+    mapMarkers = [];
+    isLoading = true;
+    isRendered;
+    latitude;
+    longitude;
   
   // Add the wired method from the Apex Class
   // Name it getBoatsByLocation, and use latitude, longitude and boatTypeId
   // Handle the result and calls createMapMarkers
-  wiredBoatsJSON({error, data}) { }
+  @wire(getBoatsByLocation, {latitude: '$latitude', longitude: '$longitude', boatTypeId: '$boatTypeId'})
+  wiredBoatsJSON({error, data}) {
+      if (error) {
+        const event = new ShowToastEvent({
+            title: ERROR_TITLE,
+            variant: ERROR_VARIANT
+        });
+        this.dispatchEvent(event);
+        this.isLoading = false;
+
+      } else if (data) {
+          this.createMapMarkers(JSON.parse(data));
+      }
+  }
   
   // Controls the isRendered property
   // Calls getLocationFromBrowser()
   renderedCallback() {
       if (!this.isRendered) {
         this.getLocationFromBrowser();
+        this.isRendered = true;
       }
   }
-  
+
   // Gets the location from the Browser
   // position => {latitude and longitude}
   getLocationFromBrowser() {
@@ -36,7 +52,22 @@ export default class BoatsNearMe extends LightningElement {
   
   // Creates the map markers
   createMapMarkers(boatData) {
-     // const newMarkers = boatData.map(boat => {...});
-     // newMarkers.unshift({...});
+     const newMarkers = boatData.map(boat => ({
+            location: {
+                Latitude: boat.Geolocation__Latitude__s,
+                Longitude: boat.Geolocation__Longitude__s
+            },
+            title: boat.Name
+     }));
+     newMarkers.unshift({
+         location: {
+            Latitude: this.latitude,
+            Longitude: this.longitude
+         },
+         title: LABEL_YOU_ARE_HERE,
+         icon: ICON_STANDARD_USER
+     });
+     this.mapMarkers = [...newMarkers];
+     this.isLoading = false;
    }
 }
