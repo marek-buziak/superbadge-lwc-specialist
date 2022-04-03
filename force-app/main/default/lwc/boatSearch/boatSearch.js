@@ -25,7 +25,7 @@ export default class BoatSearch extends NavigationMixin(LightningElement) {
         this[NavigationMixin.Navigate]({
             type: 'standard__objectPage',
             attributes: {
-                objectApiName: 'Boat__c ',
+                objectApiName: 'Boat__c',
                 actionName: 'new'
             },
         });
