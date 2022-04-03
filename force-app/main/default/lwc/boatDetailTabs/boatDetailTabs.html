@@ -20,11 +20,7 @@
     <template if:true={wiredRecord.data}>
        <lightning-tabset variant="scoped">
         <lightning-tab label={label.labelDetails}>
-            <!-- <lightning-card>
-                TODO - details tab
-            </lightning-card> -->
             <lightning-card title={boatName} icon-name={detailsTabIconName} class="slds-is-relative">
-                TODO - details tab
                 <slot name="actions">
                     <lightning-button style="position:absolute; top: 12px; right: 16px;" label={label.labelFullDetails} title={label.labelFullDetails} onclick={navigateToRecordViewPage}></lightning-button>
                 </slot>
@@ -40,10 +36,10 @@
             </lightning-card>
         </lightning-tab>
         <lightning-tab label={label.labelReviews}>
-            TODO - reviews tab
+            <c-boat-reviews></c-boat-reviews>
         </lightning-tab>
         <lightning-tab label={label.labelAddReview}>
-            TODO - add review tab
+            <c-boat-add-review-form></c-boat-add-review-form>
         </lightning-tab>
     </lightning-tabset>
     </template>
