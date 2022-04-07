@@ -69,6 +69,7 @@ export default class FiveStarRating extends LightningElement {
   // Method to fire event called ratingchange with the following parameter:
   // {detail: { rating: CURRENT_RATING }}); when the user selects a rating
   ratingChanged(rating) {
+    const CURRENT_RATING = rating;
     const ratingEvent = new CustomEvent('ratingchange', { detail: { rating: CURRENT_RATING }});
     this.dispatchEvent(ratingEvent);
   }

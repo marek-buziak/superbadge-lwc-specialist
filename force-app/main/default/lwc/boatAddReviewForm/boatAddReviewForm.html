@@ -2,11 +2,16 @@
     <!-- lightning data service code -->
     <lightning-record-edit-form
         object-api-name={boatReviewObject}
-        record-id={recordId}> <!--using boatReviewObject -->
+        onsubmit={handleSubmit}
+        onsuccess={handleSuccess}
+        onerror={handleError}> <!--using boatReviewObject -->
       <lightning-layout multiple-rows vertical-align="start">
         <lightning-layout-item size="8" padding="horizontal-small">
           <div class="slds-form-element">
-            <label class="slds-form-element__label" for={nameField}>{labelSubject}</label>
+            <label class="slds-form-element__label" for={nameField}>
+                <abbr title="required" class="slds-required">*</abbr>
+                {labelSubject}
+            </label>
              <!-- review subject field code using nameField -->
              <lightning-input-field field-name={nameField} variant="label-hidden" required> </lightning-input-field>
           </div>
@@ -16,7 +21,7 @@
             <label class="slds-form-element__label" for="record-name">{labelRating}</label>
             <div class="slds-form-element__control">
               <!-- add five star rating component -->
-              <c-five-star-rating></c-five-star-rating>
+              <c-five-star-rating onratingchange={handleRatingChanged}></c-five-star-rating>
             </div>
           </div>
         </lightning-layout-item>
@@ -27,9 +32,10 @@
       </lightning-layout>
       <div class="slds-align_absolute-center" style="margin-top: 5px">
         <lightning-button
-            type="submit"
             label="Submit"
-            icon-name="utility:save">
+            type="submit"
+            icon-name="utility:save"
+        >
         </lightning-button>
       </div>
     </lightning-record-edit-form>
