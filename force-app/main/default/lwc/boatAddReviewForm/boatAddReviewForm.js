@@ -43,16 +43,15 @@ export default class BoatAddReviewForm extends LightningElement {
     // form to be submitted: lightning-record-edit-form
     handleSubmit(event) {
         event.preventDefault();
-        console.log("this.selectedBoatId:", this.selectedBoatId);
-        const fields = {...event.detail.fields, Boat__c: this.selectedBoatId, Rating__c: this.rating};
-        console.log('fields to submit:', JSON.parse(JSON.stringify(fields)));
+        const fields = event.detail.fields;
+        fields.Boat__c = this.selectedBoatId;
+        fields.Rating__c = this.rating;
         this.template.querySelector('lightning-record-edit-form').submit(fields);
     }
     
     // Shows a toast message once form is submitted successfully
     // Dispatches event when a review is created
-    handleSuccess() {
-        console.log('handleSuccess fires!');
+    handleSuccess(evt) {
       // TODO: dispatch the custom event and show the success message
         const event = new ShowToastEvent({
             title: SUCCESS_TITLE,
@@ -73,7 +72,6 @@ export default class BoatAddReviewForm extends LightningElement {
     // Clears form data upon submission
     // TODO: it must reset each lightning-input-field
     handleReset() {
-        console.log('handleReset fires!');
         const inputFields = this.template.querySelectorAll(
             'lightning-input-field'
         );
