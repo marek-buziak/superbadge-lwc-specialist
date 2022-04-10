@@ -1,7 +1,8 @@
 import { LightningElement, api } from 'lwc';
+import { NavigationMixin } from 'lightning/navigation';
 import getAllReviews from '@salesforce/apex/BoatDataService.getAllReviews';
 
-export default class BoatReviews extends LightningElement {
+export default class BoatReviews extends NavigationMixin(LightningElement) {
     // Private
     boatId;
     error;
@@ -19,36 +20,33 @@ export default class BoatReviews extends LightningElement {
       //get reviews associated with boatId
         this.setAttribute('boatId', value);
         this.boatId = value;
-        console.log('boatId:', this.boatId);
-        this.getReviews(this.boatId);
+        this.getReviews();
     }
     
     // Getter to determine if there are reviews to display
     get reviewsToShow() {
         if (this.boatReviews !== null && this.boatReviews !== undefined && this.boatReviews.length) {
-            console.log('There are reviews!');
             return true;
         } else {
-            console.log('There are no reviews!');
             return false;
         }
     }
     
     // Public method to force a refresh of the reviews invoking getReviews
     @api refresh() {
-        this.getReviews(this.boatId);
+        this.getReviews();
     }
     
     // Imperative Apex call to get reviews for given boat
     // returns immediately if boatId is empty or null
     // sets isLoading to true during the process and false when it’s completed
     // Gets all the boatReviews from the result, checking for errors.
-    getReviews(boatId) {
-        if (!boatId) {
+    getReviews() {
+        if (!this.boatId) {
             return;
         }
         this.isLoading = true;
-        getAllReviews({boatId})
+        getAllReviews({boatId: this.boatId})
         .then(result => {
             this.boatReviews = result;
             console.log('this.boatReviews:', JSON.parse(JSON.stringify(this.boatReviews)));
@@ -63,5 +61,15 @@ export default class BoatReviews extends LightningElement {
     }
     
     // Helper method to use NavigationMixin to navigate to a given record on click
-    navigateToRecord(event) {  }
+    navigateToRecord(event) {
+        // console.log('event.target.dataset:', JSON.parse(JSON.stringify(event.target.dataset)));
+        const userId = event.target.dataset.recordId;
+        this[NavigationMixin.Navigate]({
+            type: 'standard__recordPage',
+            attributes: {
+                recordId: userId,
+                actionName: 'view'
+            }
+        });
+    }
   }

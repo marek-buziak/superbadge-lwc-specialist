@@ -94,7 +94,7 @@ subscribeMC() {
     this[NavigationMixin.Navigate]({
         type: 'standard__recordPage',
         attributes: {
-            recordId: this.recordId,
+            recordId: this.boatId,
             objectApiName: 'Boat__c', // objectApiName is optional
             actionName: 'view'
         }
@@ -103,7 +103,8 @@ subscribeMC() {
   
   // Navigates back to the review list, and refreshes reviews component
   handleReviewCreated() {
-      console.log("handleReviewCreated() fires!");
+    //   console.log("handleReviewCreated() fires!");
       this.template.querySelector('lightning-tabset').activeTabValue = this.label.labelReviews;
+      this.template.querySelector('c-boat-reviews').refresh();
   }
 }

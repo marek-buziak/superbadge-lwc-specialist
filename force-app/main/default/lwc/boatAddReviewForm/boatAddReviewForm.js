@@ -10,7 +10,6 @@ import COMMENT_FIELD from "@salesforce/schema/BoatReview__c.Comment__c";
 const SUCCESS_TITLE = "Review Created!";
 const SUCCESS_VARIANT = "success";
 export default class BoatAddReviewForm extends LightningElement {
-    @api selectedBoatId;
     // Private
     boatId;
     rating;
@@ -44,7 +43,7 @@ export default class BoatAddReviewForm extends LightningElement {
     handleSubmit(event) {
         event.preventDefault();
         const fields = event.detail.fields;
-        fields.Boat__c = this.selectedBoatId;
+        fields.Boat__c = this.recordId;
         fields.Rating__c = this.rating;
         this.template.querySelector('lightning-record-edit-form').submit(fields);
     }
