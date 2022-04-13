@@ -7,4 +7,9 @@
         <target>lightning__RecordPage</target>
         <target>lightning__HomePage</target>
     </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__AppPage, lightning__RecordPage, lightning__HomePage">
+          <property label="Enter the property you want to compare by" name="similarBy" type="String" datasource="Type,Price,Length" default="Type"/>
+        </targetConfig>
+    </targetConfigs>
 </LightningComponentBundle>
