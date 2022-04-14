@@ -1,8 +1,9 @@
 // imports
 import { LightningElement, api, wire } from 'lwc';
+import { NavigationMixin } from 'lightning/navigation';
 import getSimilarBoats from '@salesforce/apex/BoatDataService.getSimilarBoats';
 // import getSimilarBoats
-export default class SimilarBoats extends LightningElement {
+export default class SimilarBoats extends NavigationMixin(LightningElement) {
     // Private
     currentBoat;
     relatedBoats;
@@ -42,5 +43,14 @@ export default class SimilarBoats extends LightningElement {
     }
 
     // Navigate to record page
-    openBoatDetailPage(event) { }
+    openBoatDetailPage(event) {
+        this.currentBoat = event.detail.boatId;
+        this[NavigationMixin.Navigate]({
+            type: 'standard__recordPage',
+            attributes: {
+                recordId: this.currentBoat,
+                actionName: 'view'
+            }
+        });
+    }
 }

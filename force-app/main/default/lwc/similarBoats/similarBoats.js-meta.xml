@@ -8,7 +8,13 @@
         <target>lightning__HomePage</target>
     </targets>
     <targetConfigs>
-        <targetConfig targets="lightning__AppPage, lightning__RecordPage, lightning__HomePage">
+        <targetConfig targets="lightning__RecordPage">
+          <property label="Enter the property you want to compare by" name="similarBy" type="String" datasource="Type,Price,Length" default="Type"/>
+          <objects>
+              <object>Boat__c</object>
+          </objects>
+        </targetConfig>
+        <targetConfig targets="lightning__AppPage, lightning__HomePage">
           <property label="Enter the property you want to compare by" name="similarBy" type="String" datasource="Type,Price,Length" default="Type"/>
         </targetConfig>
     </targetConfigs>
